@@ -1,0 +1,52 @@
+{% load static %}
+<!Doctype html>
+<html lang="en">
+  <head>
+    
+    <title>{% block title%} {% endblock%}</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/site.css' %}" />
+    {% block extra_styles%} {% endblock%}
+    
+  </head>
+  <body>
+
+      <div class="container-fluid">
+
+          <h1 style="text-align: center; font-weight: bolder;">Pinocchio's Pizza & Subs</h1>
+          <h4 style="text-align: center; font-weight: bolder;">74 Winthrop Street, Harvard Square, 617-876-4897</h4>
+
+          <div style="text-align: center">
+              <img src="{%static 'img/banner.png' %}" alt="banner" height="150px">
+
+              {% if user.is_authenticated %}
+
+                <p>Welcome, {{user.username}} </p>
+                
+                <p> 
+                  <a href="{% url 'index' %}">Home</a> | 
+                  <a href="{% url 'my_orders' %}">My Orders</a> | 
+                  <a style="color:red" href="{% url 'logout' %}">Logout</a> 
+                </p>
+
+              {% endif %}
+              
+          </div>
+
+         <br><br>
+    
+          {% block body%} {% endblock%}
+      </div>
+
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}" ></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}" ></script>
+    <script type="text/javascript" src="{% static 'js/site.js' %}" ></script>
+    {% block extra_scripts%} {% endblock%}
+
+  </body>
+</html>

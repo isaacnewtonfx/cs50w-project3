@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block title %}Preview Checkout{% endblock %}
+
+{% block body %}
+
+<h2>Confirm Your Order</h2>
+<hr/>
+
+<div class="row">
+
+	
+	<div class="col-sm-6">
+
+			<div class="card">
+
+				<div class="card-header">
+					<h4>Cart</h4>
+				</div>
+	
+				<div class="card-body">
+
+					<h5 style="font-weight: bolder; color:green">Total: ${{CartTotal}}</h5>
+					
+					<table class="table">
+						<tbody>	
+							<thead>
+								<th>Menu Item</th>
+								<th>Qty</th>
+								<th>Price</th>
+								<th>Toppings</th>
+							</thead>
+
+							{% for CartItem in request.session.Cart %}
+								<tr>
+									<td>{{CartItem.name}}</td>
+									<td>{{CartItem.qty}}</td>
+									<td>{{CartItem.price}}</td>
+									<td>{{CartItem.toppings}}</td>
+								</tr>
+							{% endfor %}
+
+						</tbody>
+					</table>
+
+                    <p> <a href="{% url 'process_order' %}">Process My Order</a> </p>
+				</div>
+		
+			</div>
+	
+	</div>
+</div>
+
+
+{% endblock %}

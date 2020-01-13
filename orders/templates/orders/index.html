@@ -1,0 +1,205 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block title %}Orders{% endblock %}
+
+{% block body %}
+
+<h2>Orders</h2>
+<hr/>
+
+{% if messages %}
+		{% include "messages.html" %}
+	{% endif %}
+
+<div class="row">
+
+	<div class="col-sm-7">
+	
+		<div class="card">
+
+			<div class="card-header">
+			  <h4>Our Menu</h4>
+			</div>
+			
+
+			<div class="card-body">
+
+					{% for Menu in Menus %}
+				
+						{% if Menu.name in singlePrice %}
+
+							<h5 style="font-weight: bolder; color:green">{{Menu.name}}</h5>
+
+							<table class="table">
+								<thead>
+									<th>Menu Item</th>
+									<th>Add To Cart</th>
+								</thead>
+
+								<tbody>	
+																	
+									{% for menuItem in Menu.menuitem_set.all %}
+										<tr>
+											<td>{{menuItem.name}}</td>
+											<td>
+												<form method="post" action="{%url 'add_to_cart' %}">
+													{% csrf_token %}
+													<input type="text" name="itemId" value="{{menuItem.id}}" style="display: none;">
+													<input type="text" name="itemName" value="{{menuItem.name}}" style="display: none;">
+													<input class="qty" type="number" min="1" name="qty" placeholder="Qty">
+													<select name="price">
+														<option selected value="{{menuItem.small_price}}">Price: ${{menuItem.small_price}}</option>
+													</select>
+													<input type="submit" value="Add">
+												</form>
+											</td>
+
+										</tr>
+									{% endfor %}
+
+								</tbody>
+							</table>
+
+						{% elif Menu.name in smallAndLargePrice %}
+
+						<h5 style="font-weight: bolder; color:green">{{Menu.name}}</h5>
+
+						<table class="table">
+								<thead>
+										<th>Menu Item</th>
+										<th>Add To Cart</th>
+									</thead>
+							<tbody>	
+																
+								{% for menuItem in Menu.menuitem_set.all %}
+									<tr>
+										<td>{{menuItem.name}}</td>
+										<td>
+											<form method="post" action="{%url 'add_to_cart' %}">
+												{% csrf_token %}
+												<input type="text" name="itemId" value="{{menuItem.id}}" style="display: none;">
+												<input type="text" name="itemName" value="{{menuItem.name}}" style="display: none;">
+												<input class="qty" type="number" min="1" name="qty" placeholder="Qty">
+												<select name="price">
+													<option value="{{menuItem.small_price}}">Price: Small ${{menuItem.small_price}}</option>
+													<option value="{{menuItem.large_price}}">Price: Large ${{menuItem.large_price}}</option>
+												</select>
+
+
+												{% if menuItem.allowed_toppings == 1 %}
+														<select name="topping1">
+															{% for Topping in Toppings %}
+																<option value="{{Topping.name}}">Top: {{Topping.name}}</option>
+															{% endfor %}
+														</select>
+													{% elif menuItem.allowed_toppings == 2 %}
+
+														<select name="topping1">
+															{% for Topping in Toppings %}
+																<option value="{{Topping.name}}">Top1: {{Topping.name}}</option>
+															{% endfor %}
+														</select>
+
+														<select name="topping2">
+															{% for Topping in Toppings %}
+																<option value="{{Topping.name}}">Top2: {{Topping.name}}</option>
+															{% endfor %}
+														</select>
+
+													{% elif menuItem.allowed_toppings == 3 %}
+
+														<select name="topping1">
+															{% for Topping in Toppings %}
+																<option value="{{Topping.name}}">Top1: {{Topping.name}}</option>
+															{% endfor %}
+														</select>
+
+														<select name="topping2">
+															{% for Topping in Toppings %}
+																<option value="{{Topping.name}}">Top2: {{Topping.name}}</option>
+															{% endfor %}
+														</select>
+
+														<select name="topping3">
+															{% for Topping in Toppings %}
+																<option value="{{Topping.name}}">Top3: {{Topping.name}}</option>
+															{% endfor %}
+														</select>
+
+													{% endif %}
+
+
+												<input type="submit" value="Add">
+											</form>
+										</td>
+									</tr>
+								{% endfor %}
+
+							</tbody>
+						</table>
+
+						{% endif %}
+
+
+					{% endfor %}
+				
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-5">
+
+			<div class="card">
+
+				<div class="card-header">
+					<h4>Cart</h4>
+				</div>
+	
+				<div class="card-body">
+
+					<h5 style="font-weight: bolder; color:green">Total: ${{CartTotal}}</h5>
+
+					<br>
+					{% if request.session.Cart %}
+						<a href="{% url 'empty_cart' %}">Empty Cart</a>
+					{% endif %}
+					
+					<table class="table">
+							<thead>
+									<th>Menu Item</th>
+									<th>Qty</th>
+									<th>Price</th>
+									<th>Toppings</th>
+									<th>Action</th>
+								</thead>
+						<tbody>	
+							
+
+							{% for CartItem in request.session.Cart %}
+								<tr>
+									<td>{{CartItem.name}}</td>
+									<td>{{CartItem.qty}}</td>
+									<td>{{CartItem.price}}</td>
+									<td>{{CartItem.toppings}}</td>
+									<td>
+										<a href="{% url 'remove_cart_item' CartItem.id %}">Remove</a>
+									</td>
+								</tr>
+							{% endfor %}
+
+						</tbody>
+					</table>
+
+					{% if request.session.Cart %}
+						<p> <a href="{% url 'preview_checkout' %}">Proceed to checkout</a> </p>
+					{% endif %}
+
+				</div>
+		
+			</div>
+	
+	</div>
+</div>
+
+
+{% endblock %}

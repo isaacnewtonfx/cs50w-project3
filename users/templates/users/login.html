@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block title %}Login{% endblock %}
+
+{% block body %}
+<div class="col-sm-4" style="margin: auto">
+	
+	<h2>Login</h2>
+	<hr/>
+
+    <!--Show notification/error messages here -->
+	{% if messages %}
+		{% include "messages.html" %}
+	{% endif %}
+
+	<form method="post" action="{% url 'login' %}">
+	{% csrf_token %}
+		
+		Username:<br />
+		<input type="text" name="username" value="" class="form-control" />
+		<small class="alert-danger">{{ errors.username }}</small>
+
+		<br>
+
+		Password:<br />
+		<input type="password" name="password" value="" class="form-control" />
+		<small class="alert-danger">{{ errors.password }} </small>
+
+		<br><br>
+		<input class="btn btn-sm btn-primary" type="submit" value="Login" name="login" />
+		&nbsp;&nbsp;&nbsp;
+		<span>Not a member?</span> <a href="{% url 'register' %}">Register Here</a> 
+	</form>
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block title %}Register{% endblock %}
+
+
+{% block body %}
+
+<div class="col-sm-4" style="margin:auto;">
+
+		<h2>Register</h2>
+		<i>(Note. All fields tagged with a star symbol(*) are strictly required)</i>
+		<hr />
+
+
+		<!--Show notification/error messages here -->
+		{% if messages %}
+		{% include "messages.html" %}
+		{% endif %}
+
+
+		<form  method="post" action="{% url 'register' %}">
+			{% csrf_token %}
+
+
+			<div class="row">
+
+				<div class="col-sm-6">
+
+					<!--Username-->
+					<div class="form-group">
+						<label for="username">Username*</label>
+						<input type="text" name="username" size="50" maxlength="30" class="form-control" value=""  >
+						<small class="alert-danger">{{ errors.username }}</small>
+					</div>
+
+					<!--Password-->
+					<div class="form-group">
+						<label for="password">Password*</label>
+						<input type="password"  name="password" size="50" maxlength="30" class="form-control" value="" >
+						<small class="alert-danger">{{ errors.password }}</small>
+					</div>
+			
+					<!--Password Confirmation-->
+					<div class="form-group">
+						<label for="conf_password">Confirm Password*</label>			
+						<input type="password" name="conf_password" size="50" maxlength="30" class="form-control" value=""  >
+						<small class="alert-danger">{{ errors.conf_password }}</small>
+					</div>
+
+				</div>
+
+				<div class="col-sm-6">
+
+					<!--Firstname-->
+					<div class="form-group">
+						<label for="firstname">Firstname*</label>
+						<input type="text" name="firstname" size="50" maxlength="30" class="form-control" value=""  >
+						<small class="alert-danger">{{ errors.firstname }}</small>
+					</div>
+		
+		
+					<!--Lastname-->
+					<div class="form-group">
+						<label for="lastname">Lastname*</label>
+						<input type="text" name="lastname" size="50" maxlength="30" class="form-control" value=""  >
+						<small class="alert-danger">{{ errors.lastname }}</small>
+					</div>
+
+					<!--Email-->
+					<div class="form-group">
+						<label for="email">Email*</label>
+						<input type="email" name="email" size="50" maxlength="30" class="form-control" value=""  >
+						<small class="alert-danger">{{ errors.email }}</small>
+					</div>
+
+				</div>
+
+			</div>
+		
+			
+			<input class="btn btn-primary" type="submit" value="Register" name="register" />
+			&nbsp;&nbsp;&nbsp;
+			<span>Already a member?</span> <a href="{% url 'login' %}">Login Here</a> 
+
+		</form>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block title %}My Orders{% endblock %}
+
+{% block body %}
+
+<h2>My Orders</h2>
+<hr/>
+
+        {% if MyOrders %}
+
+        {% for Order in MyOrders %}
+           
+                
+                    <div class="card">
+
+                        <div class="card-header">
+                            <h4>{{Order}} &nbsp;&nbsp; Status: {{Order.status}}</h4>
+                        </div>
+            
+                        <div class="card-body">
+                                <table class="table">
+                                        <thead>
+                                            <th>Menu Item</th>
+                                            <th>Qty</th>
+                                            <th>Price</th>
+                                            <th>Toppings</th>
+                                        </thead>
+                                    <tbody>
+                                        
+                                        {% for OrderDetail in Order.orderdetail_set.all %}
+                                            <tr>
+                                                <td>{{OrderDetail.menu_item.name}}</td>
+                                                <td>{{OrderDetail.qty}}</td>
+                                                <td>{{OrderDetail.price}}</td>
+                                                <td>{{OrderDetail.toppings}}</td>                                                
+                                            </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                        </div>
+
+                    </div>
+
+                    <br>
+
+        {% endfor %}
+
+        {% else %}
+
+            <div style="margin:5px 0;" class="alert alert-success" role="alert" >
+                <p><b> You have no orders </b></p>
+            </div>
+        {% endif %}
+  
+    
+</div>
+
+
+{% endblock %}
